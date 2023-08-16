@@ -54,18 +54,22 @@ export function ChooseList(props: ChooseListProps) {
 
   return (
     <div className="flex gap-x-6">
-      <ul className="p-3">
+      <ul className="p-3 flex flex-col gap-y-1">
         {questionsArray.map(({ id, text }) => (
           <li
             key={id}
-            className={classNames("p-4 border cursor-pointer", {
-              "bg-green-300": chosenQuestion?.id === id || chosenIds.has(id),
-              "bg-red-300":
-                chosenAnswer &&
-                chosenQuestion &&
-                chosenQuestion.id === id &&
-                chosenAnswer?.id !== chosenQuestion.id,
-            })}
+            className={classNames(
+              "p-4 border border-blue-500 rounded-lg cursor-pointer bg-blue-100",
+              {
+                "!bg-green-100 border-green-500":
+                  chosenQuestion?.id === id || chosenIds.has(id),
+                "!bg-red-200 !border-red-400":
+                  chosenAnswer &&
+                  chosenQuestion &&
+                  chosenQuestion.id === id &&
+                  chosenAnswer?.id !== chosenQuestion.id,
+              }
+            )}
             onClick={() => setChosenQuestion({ id, text })}
           >
             {text}
@@ -73,19 +77,23 @@ export function ChooseList(props: ChooseListProps) {
         ))}
       </ul>
 
-      <ul className="p-3">
+      <ul className="p-3 flex flex-col gap-y-1">
         {answersArray.map(({ id, text }) => (
           <li
             key={id}
             onClick={() => setChosenAnswer({ id, text })}
-            className={classNames("p-4 border cursor-pointer", {
-              "bg-green-300": chosenAnswer?.id === id || chosenIds.has(id),
-              "bg-red-300":
-                chosenAnswer &&
-                chosenQuestion &&
-                chosenAnswer.id === id &&
-                chosenAnswer?.id !== chosenQuestion.id,
-            })}
+            className={classNames(
+              "p-4 border border-blue-500 rounded-lg cursor-pointer bg-blue-100",
+              {
+                "!bg-green-100 border-green-500":
+                  chosenAnswer?.id === id || chosenIds.has(id),
+                "!bg-red-200 !border-red-400":
+                  chosenAnswer &&
+                  chosenQuestion &&
+                  chosenAnswer.id === id &&
+                  chosenAnswer?.id !== chosenQuestion.id,
+              }
+            )}
           >
             {text}
           </li>

@@ -15,7 +15,7 @@ export function Button(props: ButtonProps) {
   return (
     <button
       className={classNames(
-        "p-4 border rounded-full min-w-[120px] bg-slate-500",
+        "p-4 rounded-full min-w-[120px] bg-slate-300 hover:bg-slate-200 transition-all",
         className
       )}
       onClick={onClick}
