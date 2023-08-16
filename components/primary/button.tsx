@@ -13,7 +13,13 @@ export function Button(props: ButtonProps) {
   const { children, className, onClick } = props;
 
   return (
-    <button className={classNames("p-4 border", className)} onClick={onClick}>
+    <button
+      className={classNames(
+        "p-4 border rounded-full min-w-[120px] bg-slate-500",
+        className
+      )}
+      onClick={onClick}
+    >
       {children}
     </button>
   );

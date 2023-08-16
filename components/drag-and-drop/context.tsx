@@ -25,7 +25,7 @@ export function DragAndDropContext({
   const onDragUpdate = useCallback(() => {
     /*...*/
   }, []);
-  const onDragEnd = useCallback((v) => {
+  const onDragEnd = useCallback((v: any) => {
     // the only one that is required
     console.log("stop dragging", v);
     onDragComplete(v);

@@ -1,7 +1,14 @@
 "use client";
 
-import { useCallback, useMemo, useState } from "react";
-import { Button, Drag, DragAndDropContext, Drop } from "../../../../components";
+import { useEffect, useState } from "react";
+import {
+  Button,
+  ChooseList,
+  Drag,
+  DragAndDropContext,
+  Drop,
+} from "../../../../components";
+import classNames from "classnames";
 
 const familyMembers = [
   { text: "When you have children, you are a", id: 1 },
@@ -16,89 +23,66 @@ const familyMembers = [
 
 const answers = [
   { text: "daughter", id: 5 },
-  { text: "father", id: 2 },
-  { text: "siblings", id: 8 },
-  { text: "son", id: 4 },
-  { text: "husband", id: 6 },
-  { text: "parent", id: 1 },
   { text: "wife", id: 7 },
+  { text: "siblings", id: 8 },
+  { text: "father", id: 2 },
+  { text: "husband", id: 6 },
+  { text: "son", id: 4 },
+  { text: "parent", id: 1 },
   { text: "mother", id: 3 },
 ];
 
 export default function Lesson() {
   const [answersArray, setAnswersArray] =
     useState<{ text: string; id: number }[]>(answers);
+  const [familyMembersArray, setFamilyMembersArray] =
+    useState<{ text: string; id: number }[]>(familyMembers);
+  const [chosenIds, setChosenIds] = useState<Set<number>>(new Set());
+  const [chosenMember, setChosenMember] = useState<{
+    text: string;
+    id: number;
+  } | null>(null);
+  const [chosenAnswer, setChosenAnswer] = useState<{
+    text: string;
+    id: number;
+  } | null>(null);
 
-  const newArray = [...answers];
+  useEffect(() => {
+    if (!chosenAnswer || !chosenMember) return;
 
-  const onDragComplete = useCallback(
-    (v: any) => {
-      const array = [...answers];
-      // console.log("start array", array);
+    if (chosenAnswer.id === chosenMember.id) {
+      console.log("they are equal");
+      setChosenIds((prev) => prev.add(chosenAnswer.id));
 
-      const startIndex = v.source.index;
-      const stopIndex = v.destination.index;
-      const updatedItem = newArray[startIndex];
+      const a = [...answersArray];
+      const f = [...familyMembersArray];
 
-      console.log("startIndex", startIndex);
-      console.log("stopIndex", stopIndex);
-
-      // Delete moved item from array
-      newArray.splice(startIndex, 1);
-      console.log("array after delete", array);
-
-      // Update array with new item position
-      newArray.splice(stopIndex, 0, updatedItem);
-      console.log("array", array);
-
-      setAnswersArray(
-        array
-        // // Delete moved item from array
-        // prev.splice(startIndex, 1);
-
-        // // Update array with new item position
-        // prev.splice(stopIndex, 0, updatedItem);
-
-        // return prev;
+      const startIndexMember = f.findIndex(
+        (member) => member.id === chosenMember.id
       );
-    },
-    [newArray]
-  );
+      const startIndexAnswer = a.findIndex((an) => an.id === chosenAnswer.id);
 
-  console.log("answersArray", answersArray);
+      f.splice(startIndexMember, 1);
+      f.splice(f.length, 0, chosenMember);
+
+      a.splice(startIndexAnswer, 1);
+      a.splice(a.length, 0, chosenAnswer);
+
+      setAnswersArray(a);
+      setFamilyMembersArray(f);
+
+      setChosenAnswer(null);
+      setChosenMember(null);
+    }
+  }, [chosenAnswer, chosenMember, answersArray, familyMembersArray, chosenIds]);
 
   return (
-    <div className="p-0">
-      Lesson
-      <div className="flex">
-        <ul className="p-3">
-          {familyMembers.map(({ id, text }) => (
-            <li key={id} className="p-4 border">
-              {text}
-            </li>
-          ))}
-        </ul>
+    <div className="p-12 w-full flex flex-col items-center">
+      <h2 className="font-bold text-blue-900">Immediate Family</h2>
 
-        <DragAndDropContext onDragComplete={onDragComplete}>
-          <Drop id="family" className="p-3" success={true}>
-            {newArray.map((item, index) => (
-              <Drag
-                key={item.id}
-                className="p-4 border"
-                text={item.text}
-                index={index}
-              />
-            ))}
-            {/* <Drag className="p-4 border" text="1" index={2} />
-            <Drag className="p-4 border" text="2" index={1} />
-            <Drag className="p-4 border" text="3" index={3} />
-            <Drag className="p-4 border" text="4" index={4} />
-            <Drag className="p-4 border" text="5" index={5} />
-            <Drag className="p-4 border" text="6" index={6} /> */}
-          </Drop>
-        </DragAndDropContext>
-      </div>
-      {/* <Button onClick={() => console.log("click on button")}>Text</Button> */}
+      <ChooseList questions={familyMembers} answers={answers} />
+
+      <Button onClick={() => console.log("click on button")}>Text</Button>
     </div>
   );
 }
