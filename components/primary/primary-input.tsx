@@ -5,7 +5,7 @@ import { ChangeEvent, useState } from "react";
 
 type PrimaryInputProps = {
   type?: string;
-  onChange: (e: ChangeEvent<HTMLInputElement>) => void;
+  onChange?: (e: ChangeEvent<HTMLInputElement>) => void;
   className?: string;
   value?: string;
   isError?: boolean;
@@ -42,10 +42,10 @@ export function PrimaryInput(props: PrimaryInputProps) {
             setIsNotCorrent(false);
           }
 
-          if (!isAnswerCorrect && value) {
-            setIsCorrent(false);
-            setIsNotCorrent(true);
-          }
+          // if (!isAnswerCorrect && value) {
+          //   setIsCorrent(false);
+          //   setIsNotCorrent(true);
+          // }
         }
 
         // onChange(e);
