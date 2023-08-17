@@ -1,5 +1,4 @@
-import { Dispatch, SetStateAction } from "react";
-import { Button, ChooseList } from "../../../../components";
+import { ChooseList } from "../../../../components";
 
 const familyMembers = [
   { text: "When you have children, you are a", id: 1 },
@@ -257,11 +256,7 @@ const mixAnswers = [
   },
 ];
 
-type VocabularyProps = {
-  setIsNextPage: Dispatch<SetStateAction<boolean>>;
-};
-
-export function Vocabulary({ setIsNextPage }: VocabularyProps) {
+export function FamilyVocabulary() {
   return (
     <div className="p-12 w-full flex flex-col items-center bg-slate-100">
       <h2 className="font-bold text-blue-900">Immediate Family</h2>
@@ -306,8 +301,6 @@ export function Vocabulary({ setIsNextPage }: VocabularyProps) {
         note that it is common to still call your half-brother or half-sister
         just your brother or sister (without adding the half- part).`}
       </p>
-
-      <Button onClick={() => setIsNextPage(true)}>Next</Button>
     </div>
   );
 }
